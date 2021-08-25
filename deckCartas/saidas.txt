@@ -1,0 +1,48 @@
+Deck:              2♥ 3♥ 4♥ 5♥ J♥ 2♦ 3♦ 4♦ 5♦ J♦ 2♣ 3♣ 4♣ 5♣ J♣ 2♠ 3♠ 4♠ 5♠ J♠
+Deck embaralhado:  2♣ 4♥ J♠ 4♣ 2♦ 3♥ 4♠ 3♦ 5♦ J♣ 4♦ 3♣ J♥ 2♥ 5♠ 5♣ J♦ 5♥ 3♠ 2♠
+
+Buckets Numeros
+ index 1    ||  2♣  |  2♦  |  2♥  |  2♠  |
+ index 2    ||  3♥  |  3♦  |  3♣  |  3♠  |
+ index 3    ||  4♥  |  4♣  |  4♠  |  4♦  |
+ index 4    ||  5♦  |  5♠  |  5♣  |  5♥  |
+ index 10    ||  J♠  |  J♣  |  J♥  |  J♦  |
+
+Deck com ordenacao dos numeros
+ 2♠ 2♥ 2♦ 2♣ 3♠ 3♣ 3♦ 3♥ 4♦ 4♠ 4♣ 4♥ 5♥ 5♣ 5♠ 5♦ J♦ J♥ J♣ J♠
+
+Buckets por naipes
+    0    ||  2♥  |  3♥  |  4♥  |  5♥  |  J♥  |
+    1    ||  2♦  |  3♦  |  4♦  |  5♦  |  J♦  |
+    2    ||  2♣  |  3♣  |  4♣  |  5♣  |  J♣  |
+    3    ||  2♠  |  3♠  |  4♠  |  5♠  |  J♠  |
+
+Deck ordenado
+ 2♣ 3♣ 4♣ 5♣ J♣ 2♦ 3♦ 4♦ 5♦ J♦ 2♥ 3♥ 4♥ 5♥ J♥ 2♠ 3♠ 4♠ 5♠ J♠
+
+ -------------------------------------------------------------------------
+
+ Deck:
+ 2♥ A♥ 4♥ K♥ 6♥ J♥ 2♦ A♦ 4♦ K♦ 6♦ J♦ 2♣ A♣ 4♣ K♣ 6♣ J♣ 2♠ A♠ 4♠ K♠ 6♠ J♠
+Deck embaralhado:
+ K♥ K♣ A♠ K♦ 4♣ K♠ A♣ 6♥ J♥ J♦ J♠ 6♦ 4♦ 2♦ 6♣ A♦ A♥ 4♥ 4♠ 2♠ 6♠ 2♣ J♣ 2♥
+
+Buckets Numeros
+ index 0    ||  A♠  |  A♣  |  A♦  |  A♥  |
+ index 1    ||  2♦  |  2♠  |  2♣  |  2♥  |
+ index 3    ||  4♣  |  4♦  |  4♥  |  4♠  |
+ index 5    ||  6♥  |  6♦  |  6♣  |  6♠  |
+ index 10    ||  J♥  |  J♦  |  J♠  |  J♣  |
+ index 12    ||  K♥  |  K♣  |  K♦  |  K♠  |
+
+Deck com ordenacao dos numeros
+ A♥ A♦ A♣ A♠ 2♥ 2♣ 2♠ 2♦ 4♠ 4♥ 4♦ 4♣ 6♠ 6♣ 6♦ 6♥ J♣ J♠ J♦ J♥ K♠ K♦ K♣ K♥
+
+Buckets por naipes
+    0    ||  A♥  |  2♥  |  4♥  |  6♥  |  J♥  |  K♥  |
+    1    ||  A♦  |  2♦  |  4♦  |  6♦  |  J♦  |  K♦  |
+    2    ||  A♣  |  2♣  |  4♣  |  6♣  |  J♣  |  K♣  |
+    3    ||  A♠  |  2♠  |  4♠  |  6♠  |  J♠  |  K♠  |
+
+Deck ordenado
+ A♣ 2♣ 4♣ 6♣ J♣ K♣ A♦ 2♦ 4♦ 6♦ J♦ K♦ A♥ 2♥ 4♥ 6♥ J♥ K♥ A♠ 2♠ 4♠ 6♠ J♠ K♠

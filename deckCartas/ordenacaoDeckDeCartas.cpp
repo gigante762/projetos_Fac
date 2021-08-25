@@ -26,7 +26,13 @@ Pesos  100 | 200 | 300 | 400
 
 */
 
-const int NUMERO_UTILIZADOS[] = {2, 3, 4, 5, 11} ;
+/* Constantes para manipulação do deck
+    Troque os NUMERO_UTILIZADOS se desejar
+ */
+
+const int NUMERO_UTILIZADOS[] = { 2, 1, 4, 13, 6, 11} ;
+const int TAM_NUMEROS = sizeof(NUMERO_UTILIZADOS)/ sizeof(int);
+const int QUANTIDADE_DE_CARTAS = TAM_NUMEROS * 4; // 4 = 4 NAIPES
 
 struct carta
 {
@@ -65,29 +71,25 @@ void show(carta c)
 {
 
     //imprime o numero
-    if (c.n == 1 || (c.n >= 11 && c.n <= 13))
-    {
-        if (c.n == 1)
-            cout << 'A';
-        else if (c.n == 11)
-            cout << 'J';
-        else if (c.n == 12)
-            cout << 'Q';
-        else
-            cout << 'K';
-    }
+    if (c.n == 1)
+        cout << 'A';
+    else if (c.n == 11)
+        cout << 'J';
+    else if (c.n == 12)
+        cout << 'Q';
+    else if (c.n ==13)
+        cout << 'K'; 
     else
-    {
         cout << c.n;
-    }
 
+    // imprime a letra
     cout << c.l;
 }
 
 void mostrarDeck(carta deck[])
 {
     //mostrar as cartas
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < QUANTIDADE_DE_CARTAS; i++)
     {
         cout << " ";
         show(deck[i]);
@@ -100,8 +102,8 @@ void embaralharDeck(carta deck[], int vezes = 100)
 {
     for (int i = 0; i <= vezes; i++)
     {
-        int index1 = rand() % 20;
-        int index2 = rand() % 20;
+        int index1 = rand() % QUANTIDADE_DE_CARTAS;
+        int index2 = rand() % QUANTIDADE_DE_CARTAS;
         //troca de valores
 
         carta tmp = deck[index1];
@@ -110,14 +112,14 @@ void embaralharDeck(carta deck[], int vezes = 100)
     }
 }
 
-void sortSelectDeck(carta deck[], int n)
+void sortSelectDeck(carta deck[], int tamanhoArrayDeck)
 {
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < tamanhoArrayDeck; i++)
     {
         int maiorV = deck[i].value();
         int indexMaior = i;
-        for (int y = i + 1; y < n; y++)
+        for (int y = i + 1; y < tamanhoArrayDeck; y++)
         {
             if (deck[y].value() < maiorV)
             {
@@ -138,6 +140,47 @@ void sortSelectDeck(carta deck[], int n)
         deck[indexMaior] = deck[i];
         deck[i] = tmp;
     }
+}
+
+void sortSelect(int array[], int tamanhoArray)
+{
+
+    for (int i = 0; i < tamanhoArray; i++)
+    {
+        int maiorV = array[i];
+        int indexMaior = i;
+        for (int y = i + 1; y < tamanhoArray; y++)
+        {
+            if (array[y] < maiorV)
+            {
+                //cout << deck[y] << " < " << maiorV << endl;
+                maiorV = array[y];
+                indexMaior = y;
+            }
+        }
+
+        /* cout << "\t swap ";
+        show(array[indexMaior]);
+        cout << " <-> ";
+        show(array[i]);
+        cout << endl; */
+
+        //swap
+        int tmp = array[indexMaior];
+        array[indexMaior] = array[i];
+        array[i] = tmp;
+    }
+}
+
+bool haveNumberInDeck(const int array[], int n)
+{
+
+    for (int i = 0; i < TAM_NUMEROS; i++)
+        if (array[i] == n)
+            return true;
+
+    return false;
+    
 }
 
 void sortDistribuicao(carta deck[])
@@ -183,7 +226,7 @@ void sortDistribuicao(carta deck[])
 
         O que nos daria uma estrutura que será representada dessa forma:  */
 
-    carta bucketsNaipes[4][5];
+    carta bucketsNaipes[4][TAM_NUMEROS];
 
     /* Agora precisamos do critério de inserção, que já temos acima
        indiceBucket = naipe-3
@@ -240,13 +283,13 @@ void sortDistribuicao(carta deck[])
         Fiz assim para a melhor compreesão. O princípio é o mesmo.
      */
 
-    carta bucketsNumeros[13][5]; // 13 numeros, 5 cartas de cada
+    carta bucketsNumeros[13][TAM_NUMEROS]; // 13 numeros, 5 cartas de cada
     int posicaoDosBucketsNumero[13] = {0,0,0,0,0,  0,0,0,0,0, 0,0,0}; // 13 posições
 
     /* Vamos iterar sobre todas as cartas e colocá-las
     em seus buckerts de números */
 
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < QUANTIDADE_DE_CARTAS; i++)
     {
         // cout << "Carta:  ";
         // show(deck[i]);
@@ -283,7 +326,7 @@ void sortDistribuicao(carta deck[])
     cout << "Buckets Numeros" << endl;
     for (int i = 0; i < 13; i++)
     {
-        if ( !( i==2-1 || i==3-1 ||i == 4-1|| i ==5-1 || i==11-1 ) )
+        if ( !( haveNumberInDeck(NUMERO_UTILIZADOS,i+1) ) )
             continue;
 
         printf(" index %d    ||",i);
@@ -303,17 +346,25 @@ void sortDistribuicao(carta deck[])
         J | 5 < J | 4 < 5 < J ... | n-1 < n; 
      */
 
-    carta deckOrdenadoPorNumeros[20];
+    carta deckOrdenadoPorNumeros[QUANTIDADE_DE_CARTAS];
 
-    /* Quantidade de numeros usados */
-    int sizeNumber = sizeof(NUMERO_UTILIZADOS) / sizeof(int);
 
     /* Agora pegarei os numeros de cada bucket
      de ordem crescente e então colocarei  na array deckOrdenadoPorNumeros */
 
     
-    int tmpi = 19; //variavel para indice temporario;
-    for (int indiceBucketNumeros = sizeNumber-1; indiceBucketNumeros >= 0; indiceBucketNumeros--)
+    int tmpi = QUANTIDADE_DE_CARTAS-1; //variavel para indice temporario;
+
+    /* Farei um clone dos numeros utilizados em ordem */
+    int sorteNUMERO_UTILIZADOS[TAM_NUMEROS];
+
+    for (int i = 0; i < TAM_NUMEROS; i++)
+        sorteNUMERO_UTILIZADOS[i] = NUMERO_UTILIZADOS[i];
+
+    sortSelect(sorteNUMERO_UTILIZADOS,TAM_NUMEROS);
+    
+    
+    for (int indiceBucketNumeros = TAM_NUMEROS-1; indiceBucketNumeros >= 0; indiceBucketNumeros--)
     {
         for (int indicePosBucketNum = 0; indicePosBucketNum < 4 ; indicePosBucketNum++)
         {
@@ -324,7 +375,7 @@ void sortDistribuicao(carta deck[])
             show(bucketsNumeros[ NUMERO_UTILIZADOS[indiceBucketNumeros]-1 ][indicePosBucketNum]);
             cout << "\n"; */
             
-            deckOrdenadoPorNumeros[tmpi] = bucketsNumeros[ NUMERO_UTILIZADOS[indiceBucketNumeros]-1 ][indicePosBucketNum];
+            deckOrdenadoPorNumeros[tmpi] = bucketsNumeros[ sorteNUMERO_UTILIZADOS[indiceBucketNumeros]-1 ][indicePosBucketNum];
             tmpi--;
         }
     }
@@ -338,7 +389,7 @@ void sortDistribuicao(carta deck[])
      /* Vamos iterar sobre todas as cartas e colocá-las
     em seus buckerts de naipes */
 
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < QUANTIDADE_DE_CARTAS; i++)
     {
         /* indiceBucket = naipe-3 */
         int indiceBucketNaipe = deckOrdenadoPorNumeros[i].l - 3;
@@ -361,7 +412,7 @@ void sortDistribuicao(carta deck[])
     for (int i = 0; i < 4; i++)
     {
         printf("    %d    ||",i);
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < TAM_NUMEROS; j++)
         {
             cout << "  ";
             show(bucketsNaipes[i][j]);
@@ -381,7 +432,7 @@ void sortDistribuicao(carta deck[])
     for (int i = 0; i < 4; i++)
     {
         int numeroSequencia = sequencia[i];
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < TAM_NUMEROS; j++)
         {
             deck[tmpi] = bucketsNaipes[numeroSequencia][j];
             tmpi++;
@@ -395,50 +446,37 @@ void sortDistribuicao(carta deck[])
 int main()
 {
     srand(time(NULL)); // gera uma seed pra numero aleatorios
-                       //cout << rand()%11+2 << endl;
 
-    /* Sortear cartas de 1-5 */
     /*
           5 ♣ | 4 ♦ | 3 ♥ | 6 ♠
     Pesos  100 | 200 | 300 | 400
     */
 
-    /* Gerar o deck com 5 cartas pra cada
-    n = [2..5,10]
-    em todos os Naipes
+    /* Gerar o deck com QUANTIDADE_DE_CARTAS
+       pra cada, em todos os Naipes
     */
-    carta deck[20];
+    carta deck[QUANTIDADE_DE_CARTAS];
 
     for (unsigned int naipe = 3; naipe <= 6; naipe++)
     {
-        int sizeNumber = sizeof(NUMERO_UTILIZADOS) / sizeof(int);
-        for (int i = 1; i <= 5; i++)
+        for (int i = 1; i <= TAM_NUMEROS; i++)
         {
-            int index = ((naipe - 3) * sizeNumber) + (i - 1);
+            int index = ((naipe - 3) * TAM_NUMEROS) + (i - 1);
             //cout << "index="<<  index << endl;
             deck[index].n = NUMERO_UTILIZADOS[i - 1];
             deck[index].l = naipe;
         }
     }
 
-    //mostrar os valores
-    /* for(int i = 0; i< 20 ; i++)
-   {
-       cout << " ";
-       //show(deck[i]); 
-       cout << deck[i].n << deck[i].l;
-   }
-    cout << endl; */
-
     //mostrar as cartas
-    cout << "Deck:             ";
+    cout << "Deck:\n";
     mostrarDeck(deck);
 
     // embaralhando as cartas n vezes
     embaralharDeck(deck);
 
     //mostrar cartas embaralhadas
-    cout << "Deck embaralhado: ";
+    cout << "Deck embaralhado: \n";
     mostrarDeck(deck);
     cout << endl;
 
@@ -446,7 +484,7 @@ int main()
         unsando métodos de ordenação comum como o buble, select, merge...
     */
     
-    //sortSelectDeck(deck, 20);
+    //sortSelectDeck(deck, QUANTIDADE_DE_CARTAS);
 
     sortDistribuicao(deck);
 
