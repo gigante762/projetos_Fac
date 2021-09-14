@@ -30,9 +30,9 @@ Pesos  100 | 200 | 300 | 400
     Troque os NUMERO_UTILIZADOS se desejar
  */
 
-const int NUMERO_UTILIZADOS[] = { 2, 1, 4, 13, 6, 11} ;
+const int NUMERO_UTILIZADOS[] = { 2, 1, 4, 13, 6, 11, 7, 9} ;
 const int TAM_NUMEROS = sizeof(NUMERO_UTILIZADOS)/ sizeof(int);
-const int QUANTIDADE_DE_CARTAS = TAM_NUMEROS * 4; // 4 = 4 NAIPES
+const int QUANTIDADE_DE_CARTAS = TAM_NUMEROS ;//* 4; // 4 = 4 NAIPES
 
 struct carta
 {
@@ -95,7 +95,8 @@ void mostrarDeck(carta deck[])
         show(deck[i]);
         //cout << deck[i].n << deck[i].l;
     }
-    cout << endl;
+    //cout << " |" << endl;
+    //cout <<  endl;
 }
 
 void embaralharDeck(carta deck[], int vezes = 100)
@@ -123,23 +124,68 @@ void sortSelectDeck(carta deck[], int tamanhoArrayDeck)
         {
             if (deck[y].value() < maiorV)
             {
-                //cout << deck[y].value() << " < " << maiorV << endl;
+                show(deck[i]);
+                cout << " > ";
+                show(deck[y]);
+                cout << endl;
                 maiorV = deck[y].value();
                 indexMaior = y;
             }
+            else
+            {
+
+                /* show(deck[i]);
+                cout << " < ";
+                show(deck[y]);
+                cout << ", "; */
+            }
         }
 
-        /* cout << "\t swap ";
+        cout << "\t swap ";
         show(deck[indexMaior]);
         cout << " <-> ";
         show(deck[i]);
-        cout << endl; */
-
         //swap
         carta tmp = deck[indexMaior];
         deck[indexMaior] = deck[i];
         deck[i] = tmp;
+
+        cout << "\nDeck: ";
+        mostrarDeck(deck);
+        cout << endl;
+
+        
     }
+}
+
+void bubleDeck(carta deck[], int tamanhoArrayDeck)
+{
+    for (int i = 0; i < tamanhoArrayDeck; i++)
+    {
+        for (int j = 0; j < tamanhoArrayDeck-1; j++)
+        {
+
+            if (deck[j].value() > deck[j+1].value())
+            {
+                cout << "\t swap ";
+                show(deck[j]);
+                cout << " <-> ";
+                show(deck[j+1]);
+                
+                //swap
+                carta tmp = deck[j];
+                deck[j] = deck[j+1];
+                deck[j+1] = tmp;
+                
+                cout << "\nDeck: ";
+                mostrarDeck(deck);
+                cout << endl;
+            }
+            
+        }
+        
+    }
+    
 }
 
 void sortSelect(int array[], int tamanhoArray)
@@ -182,6 +228,69 @@ bool haveNumberInDeck(const int array[], int n)
     return false;
     
 }
+
+
+void shiftToRight(carta array[], int tam, int posInicial, int posFinal)
+{
+    for (int i = posFinal; i >= posInicial; i--)
+    {
+        array[i] = array[i-1];
+    }
+}
+
+void insertSortDebug(carta array[], int tam)
+{
+    if (tam <= 1)
+        return;
+
+    int currentPos = 1;
+    int tmp = 0;
+
+    for (int i = currentPos; i < tam; i++)
+    {
+
+        cout << "Posicao do cursor: " << currentPos << endl;
+        //cout << "i: " << i << endl;
+
+        int indTroca = currentPos;
+        for (int j = currentPos; j >= 0; j--)
+        { 
+            if (array[currentPos].value()  < array[j-1].value())
+            {
+                indTroca = j-1;
+                show(array[currentPos]);
+                cout << " < ";
+                show(array[j-1]);
+                cout << endl;
+                //cout << "\ttrocar com o " << indTroca << endl;
+            }
+
+        }
+
+        // passar o valor para temp
+        cout << "Trocando...\n";
+        carta tmp = array[currentPos];
+        array[currentPos].n = 0;
+        mostrarDeck(array);
+        cout << " | Remove o numero";
+        cout  << endl;
+        shiftToRight(array,tam,indTroca,currentPos);
+        array[indTroca].n = 0;
+        mostrarDeck(array);
+        cout << " | Desloca para a direita";
+        cout  << endl;
+
+        array[indTroca] = tmp;
+        mostrarDeck(array);
+        cout << " | Insere o valor na posicao vazia";
+        cout  << endl;
+
+        currentPos++;
+    
+    }
+    
+}
+
 
 void sortDistribuicao(carta deck[])
 {
@@ -455,38 +564,40 @@ int main()
     /* Gerar o deck com QUANTIDADE_DE_CARTAS
        pra cada, em todos os Naipes
     */
-    carta deck[QUANTIDADE_DE_CARTAS];
+    carta deck[TAM_NUMEROS];
 
-    for (unsigned int naipe = 3; naipe <= 6; naipe++)
+    
+    for (int i = 0; i <= TAM_NUMEROS-1; i++)
     {
-        for (int i = 1; i <= TAM_NUMEROS; i++)
-        {
-            int index = ((naipe - 3) * TAM_NUMEROS) + (i - 1);
-            //cout << "index="<<  index << endl;
-            deck[index].n = NUMERO_UTILIZADOS[i - 1];
-            deck[index].l = naipe;
-        }
+        int index = i;
+        //cout << "index="<<  index << endl;
+        deck[index].n = NUMERO_UTILIZADOS[i];
+        deck[index].l = 3;
     }
+    
 
     //mostrar as cartas
     cout << "Deck:\n";
     mostrarDeck(deck);
 
+   
+
     // embaralhando as cartas n vezes
     embaralharDeck(deck);
 
     //mostrar cartas embaralhadas
-    cout << "Deck embaralhado: \n";
+    cout << "\nDeck embaralhado: \n";
     mostrarDeck(deck);
     cout << endl;
+    
 
     /* Com o método value é possivel dar um sort no deck
         unsando métodos de ordenação comum como o buble, select, merge...
     */
     
-    //sortSelectDeck(deck, QUANTIDADE_DE_CARTAS);
+    sortSelectDeck(deck, QUANTIDADE_DE_CARTAS);
 
-    sortDistribuicao(deck);
+    //sortDistribuicao(deck);
 
     cout << "\nDeck ordenado \n";
     mostrarDeck(deck);
